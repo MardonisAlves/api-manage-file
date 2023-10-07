@@ -1,0 +1,23 @@
+{
+    "name": "mb/phpmvc",
+    "description": "Php mvc para teste de api",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Mardonis Alves Bezerra",
+            "email": "mardonis.bezerra@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "pecee/simple-router": "5.3.0.5",
+        "illuminate/database": "^10.26",
+        "phpoption/phpoption": "^1.9",
+        "vlucas/phpdotenv": "^5.5"
+    }
+}
