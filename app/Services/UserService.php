@@ -2,11 +2,11 @@
 namespace App\Services;
 use App\Model\User;
 
-class ServiceHome {
+class UserService {
 
    public  function index() {
      try {
-      $user = User::all();
+      $user = User::with('Endress')->get();
       if (!$user) {
           throw new UnexpectedValueException('Nenhum usuário encontrado.');
       }
