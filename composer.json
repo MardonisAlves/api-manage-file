@@ -19,6 +19,6 @@
         "illuminate/database": "^10.26",
         "phpoption/phpoption": "^1.9",
         "vlucas/phpdotenv": "^5.5",
-        "firebase/php-jwt": "^6.9"
+        "firebase/php-jwt": "^6.8"
     }
 }

@@ -1,22 +1,16 @@
 <?php
 namespace App\Middleware;
-
+use App\Utils\JwtUtil;
+use App\Exceptions\UnauthorizedException;
 use Firebase\JWT\JWT;
 use Pecee\Http\Middleware\IMiddleware;
 use Pecee\Http\Request;
 use Pecee\Http\Response;
 
-class JwtMiddleware {
 
-    protected $request;
-    protected $response;
+class JwtMiddleware implements IMiddleware{
 
-    public function __construct(Request $request, Response $response) {
-        $this->request = $request;
-        $this->response = $response;
-    }
-
-    public function handle(Request $request): void {
+    public function handle(Request $request):void {
         $token = $request->getHeader('Authorization');
 
         if (!$token) {
@@ -26,13 +20,21 @@ class JwtMiddleware {
         }
 
         $token = str_replace('Bearer ', '', $token);
-        $secretKey = getenv('SECRET_KEY');
-
+    
         try {
+      
+        $decode = JwtUtil::decodeJwt($token);
+        $responseArray = json_decode($decode, true);
+        if($responseArray['error']){
+            $response = new Response($request);
+             $response->json($responseArray);
+             $response->send();
+        }
 
-        JWT::decode($token, $secretKey, ['HS256']);
         } catch (\Exception $e) {
-            throw new InvalidArgumentException('Token não fornecido.', 401);
+            $response = new Response($request);
+            $response->json(['error' => 'Unauthorized']);
+            $response->send();
         }
     }
 }

@@ -9,7 +9,7 @@ SimpleRouter::group(['middleware' => JwtMiddleware::class], function () {
     SimpleRouter::get('/',  [HomeController::class, 'home']);
 });
 
-SimpleRouter::get('/auth', [AuthController::class, 'auth']);
+SimpleRouter::post('/auth', [AuthController::class, 'auth']);
 
 
 SimpleRouter::get('/favicon.ico', function() {
