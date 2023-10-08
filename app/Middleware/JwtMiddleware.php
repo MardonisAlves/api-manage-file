@@ -25,7 +25,7 @@ class JwtMiddleware implements IMiddleware{
       
         $decode = JwtUtil::decodeJwt($token);
         $responseArray = json_decode($decode, true);
-        if($responseArray['error']){
+        if(isset($responseArray['error'])){
             $response = new Response($request);
              $response->json($responseArray);
              $response->send();
