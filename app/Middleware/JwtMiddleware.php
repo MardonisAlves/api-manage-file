@@ -1,48 +1,29 @@
 <?php
 namespace App\Middleware;
 use App\Utils\JwtUtil;
-use App\Exceptions\UnauthorizedException;
 use Firebase\JWT\JWT;
-use Pecee\Http\Middleware\IMiddleware;
-use Pecee\Http\Request;
-use Pecee\Http\Response;
+use Psr\Http\Message\ServerRequestInterface;
+use Laminas\Diactoros\Response\JsonResponse;
+use Closure;
 
 
-class JwtMiddleware implements IMiddleware{
+class JwtMiddleware{
 
-    public function handle(Request $request):void {
-        $token = $request->getHeader('Authorization');
-
-        if (!$token) {
-            $response = new Response($request);
-            $response->json(['error' => 'Unauthorized']);
-            $response->send();
-        }
-
-        $token = str_replace('Bearer ', '', $token);
+    public function handle(ServerRequestInterface $request, Closure $next) {
+        $token = $request->getHeaders();
+        
+        var_dump($token['authorization'][0]);
     
+        if (!$token) {
+            return new JsonResponse(['error' => 'Unauthorized'], 401);
+        }
+    
+        // Verificar e validar o token JWT
         try {
-      
-        $decode = JwtUtil::decodeJwt($token);
-        $responseArray = json_decode($decode, true);
-        if(isset($responseArray['error'])){
-            $response = new Response($request);
-             $response->json($responseArray);
-             $response->send();
-        }
-
+            $decodedToken = JwtUtil::decodeJwt($token['authorization'][0]);
+            return $next($decodedToken);
         } catch (\Exception $e) {
-            $response = new Response($request);
-            $response->json(['error' => 'Unauthorized']);
-            $response->send();
+            return new JsonResponse(['error' => 'Invalid token'], 401);
         }
-    }
 }
-
-$request = new Request();
-$response = new Response($request);
-
-$md = new JwtMiddleware($request, $response);
-$md->handle($request);
-
-
+}
