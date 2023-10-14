@@ -14,7 +14,7 @@ use App\Helpers\Header;
 
 
 
-   public function all() {
+   public function findAll() {
      
      try {
       $users = User::with('Endress')->get();

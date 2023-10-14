@@ -6,7 +6,15 @@ use App\Helpers\Header;
 
 class JwtUtil {
     public static function generateToken($data) {
-        $jwt = JWT::encode($data, $_ENV['SECRET_KEY'], 'HS256');
+        $payload = [
+            'iss' => 'http://example.org',
+            'aud' => 'http://example.com',
+            'iat' => $data,
+            'nbf' => 1357000000,
+            "exp" => time() + (60)
+        ];
+        
+        $jwt = JWT::encode($payload, $_ENV['SECRET_KEY'], 'HS256');
         return Header::jwtHeader(200, $jwt);
     }
 

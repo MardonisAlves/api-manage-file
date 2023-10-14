@@ -1,4 +1,5 @@
 <?php
+
 use App\Controllers\UserController;
 use App\Controllers\AuthController;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -7,7 +8,7 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 use Slim\Routing\RouteCollectorProxy;
 use App\Middleware\JwtMiddleware;
 use Slim\Factory\AppFactory;
-
+use App\Helpers\Header;
 $app = AppFactory::create();
 
 $container = $app->getContainer();
@@ -27,9 +28,9 @@ $container['db'] = function () use($capsule){
 
 
 $app->group('/users', function(RouteCollectorProxy $group) use ($container){
-    $group->get('/all', function ($request, $response) use ($container) {
+    $group->get('/findall', function ($request, $response) use ($container) {
         $userController = new UserController($container['db'], $request, $response);
-        return $userController->all();
+        return $userController->findAll();
     })->add(new JwtMiddleware());
 });
 
@@ -37,6 +38,8 @@ $app->post('/auth', function($request, $response) use ($container) {
 $auth = new AuthController($container['db'], $request, $response);
 return $auth->auth();
 });
+
+
 
 $app->run();
 

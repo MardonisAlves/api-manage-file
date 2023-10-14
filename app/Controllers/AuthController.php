@@ -16,7 +16,7 @@ class AuthController extends BaseController{
        if (!$user || !password_verify($post['passsword'], $user->password)) {
            return json_encode(['error' => 'Credenciais inválidas']);
        }
-    return JwtUtil::generateToken(['user_id' => $user->id]);
+    return JwtUtil::generateToken($user->id);
    
    }
 

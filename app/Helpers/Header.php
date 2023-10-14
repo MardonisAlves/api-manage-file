@@ -4,9 +4,9 @@ namespace App\Helpers;
 define('CONTENT_TYPE_JSON', 'application/json');
 class Header{
 
-    public static function headerToArray($users, $response, $status){
-        $usersArray = $users->toArray();
-        $response->getBody()->write(json_encode(['users' => $usersArray]));
+    public static function headerToArray($data, $response, $status){
+        $usersArray = $data->toArray();
+        $response->getBody()->write(json_encode(['data' => $usersArray]));
         return $response->withHeader('Content-Type', CONTENT_TYPE_JSON)->withStatus($status);
     }
     
@@ -25,7 +25,7 @@ class Header{
         $response->getBody()->write(json_encode([
             'message' => 'auth success',
             'status' => $status,
-            'jwt' => $jwt
+            'tokem' => $jwt
         ]));
         return $response->withHeader('Content-Type', CONTENT_TYPE_JSON)->withStatus($status);
     }
