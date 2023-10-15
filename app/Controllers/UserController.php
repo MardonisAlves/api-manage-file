@@ -4,20 +4,16 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use Psr\Container\ContainerInterface;
 use App\Services\UserService;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+
 use Illuminate\Database\Capsule\Manager as Capsule;
 use App\Model\User;
 use App\Helpers\Header;
 
  class UserController extends BaseController{
-
-
-
    public function findAll() {
-     
      try {
       $users = User::with('Endress')->get();
+     
       return Header::headerToArray($users, $this->response, 200);
 
      } catch (\UnexpectedValueException $e) {

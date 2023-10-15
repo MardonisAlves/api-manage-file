@@ -10,23 +10,25 @@ class JwtMiddleware{
     public function __invoke(Request $request, $handler): Response {
        
         try {
-            $token = $request->getHeaderLine('Authorization');
-           
-            if (empty($token)) {
-                $response = new \Slim\Psr7\Response();
-                $response->getBody()->write(json_encode(['error' => 'Token não fornecido']));
-               return $response->withHeader('Content-Type', 'application/json')->withStatus(401);
-            }else{
-                $verify = JwtUtil::decodeJwt($token);
-                if(property_exists($verify, 'status')){
-                   return $verify;
-                }
-            }
-            
-            return $handler->handle($request);
+           return $this->verifyTokem($request, $handler);
         } catch (\Exception $e) {
            return Header::jwtHeaderError($e, 401);
         }
         
+}
+
+public static function verifyTokem($request, $handler){
+    $token = $request->getHeaderLine('Authorization');
+    if (empty($token)) {
+        $response = new \Slim\Psr7\Response();
+        $response->getBody()->write(json_encode(['error' => 'Token não fornecido']));
+       return $response->withHeader('Content-Type', 'application/json')->withStatus(401);
+     
+    }else{
+        $verify = JwtUtil::decodeJwt($token);
+        if(property_exists($verify, 'iat')){
+            return $handler->handle($request);
+        }
+    }
 }
 }

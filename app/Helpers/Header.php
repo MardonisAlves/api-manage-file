@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Helpers;
+use App\Helpers\AbstractLogger;
+
 define('CONTENT_TYPE_JSON', 'application/json');
 class Header{
 
@@ -17,6 +19,7 @@ class Header{
             'message' => 'tokem invalido',
             'status' => $status
         ]));
+        AbstractLogger::info($e, $status);
         return $response->withHeader('Content-Type', CONTENT_TYPE_JSON)->withStatus($status);
     }
 

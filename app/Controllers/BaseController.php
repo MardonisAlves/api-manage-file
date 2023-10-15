@@ -8,12 +8,14 @@ abstract class BaseController
 {
     protected $request;
     protected $response;
-    protected $db;
+  
 
-    public function __construct($db, Request $request, Response $response)
+    public function __construct(Request $request, Response $response)
     {
-        $this->db = $db;
+       
         $this->request = $request;
         $this->response = $response;
+      
+
     }
 }
