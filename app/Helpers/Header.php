@@ -32,4 +32,14 @@ class Header{
         ]));
         return $response->withHeader('Content-Type', CONTENT_TYPE_JSON)->withStatus($status);
     }
+
+    public static function validateUser($err, $status){
+        $response = new \Slim\Psr7\Response();
+        $response->getBody()->write(json_encode([
+            'message' => 'Campos obrigatorios',
+            'status' => $status,
+            'error' => $err
+        ]));
+        return $response->withHeader('Content-Type', CONTENT_TYPE_JSON)->withStatus($status);
+    }
 }

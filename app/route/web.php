@@ -7,17 +7,27 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Slim\Routing\RouteCollectorProxy;
 use App\Middleware\JwtMiddleware;
+use App\Helpers\ValidatorUserCreate;
 
 include_once 'dependeces.php';
 
 
-
-$app->group('/users', function(RouteCollectorProxy $group){
-    $group->get('/findall', function ($request, $response){
+$app->group('/users',  function(RouteCollectorProxy $group){
+    $group->get('/findall',  function ($request, $response){
         $userController = new UserController($request, $response);
         return $userController->findAll();
-    })->add(new JwtMiddleware());
-});
+    });
+
+    $group->post('/create', function($request, $response) {
+        $userController = new UserController($request, $response);
+        return $userController->create();
+    })->add(new ValidatorUserCreate());
+
+})->add(new JwtMiddleware());
+
+
+
+
 
 $app->post('/auth', function($request, $response) use ($container) {
 $auth = new AuthController($request, $response);
