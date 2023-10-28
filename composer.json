@@ -15,9 +15,17 @@
     ],
     "minimum-stability": "stable",
     "require": {
-        "pecee/simple-router": "5.3.0.5",
-        "illuminate/database": "^10.26",
+        "illuminate/database": "10.26",
         "phpoption/phpoption": "^1.9",
-        "vlucas/phpdotenv": "^5.5"
+        "vlucas/phpdotenv": "^5.5",
+        "firebase/php-jwt": "^6.8",
+        "slim/slim": "^4.12",
+        "slim/psr7": "^1.6",
+        "illuminate/events": "^10.28",
+        "predis/predis": "^2.2",
+        "ext-pdo_pgsql": "*",
+        "davidepastore/slim-validation": "^3.0",
+        "monolog/monolog": "^3.4",
+        "vlucas/valitron": "^1.4"
     }
 }
