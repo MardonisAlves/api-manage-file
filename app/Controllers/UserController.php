@@ -2,21 +2,24 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use Psr\Container\ContainerInterface;
-use App\Services\UserService;
-
-use Illuminate\Database\Capsule\Manager as Capsule;
 use App\Model\User;
 use App\Helpers\Header;
+use App\Utils\JwtUtil;
+use Exception;
 
  class UserController extends BaseController{
    public function findAll() {
      try {
       $users = User::with('Endress')->get();
+      if($users->isEmpty()) {
+       return Header::validateRequest(204, 'Usuário nao encontrado');
+      } else {
       return Header::headerToArray($users, $this->response, 200);
 
+      }
+
      } catch (\UnexpectedValueException $e) {
-      return $this->response->withStatus(404)->withJson(['error' => $e->getMessage()]);
+      return Header::validateRequest(500, 'Error inreno no servidor');
      }
         
    }
@@ -27,20 +30,23 @@ use App\Helpers\Header;
       $data =  $this->request->getBody();
       $post = json_decode($data, true);
 
-      $create = new User;
-      $create->email = $post['email'];
-      $create->name = $post['name'];
-      $create->password = $post['password'];
-      $create->typeuser = $post['type'];
-      $create->save();
-      
-     
-      $this->response->getBody()->write(json_encode(['data' => $post]));
-      return $this->response->withHeader('Content-Type', 'application/json')->withStatus(200);
-      
+      $verifyUser = JwtUtil::verifyUserEmail($post['email']);
+
+      if(!empty($verifyUser)){
+       return Header::validateRequest(200, 'Usuário ja esta cadastrado');
+      }else{
+        $create = new User;
+        $create->email = $post['email'];
+        $create->name = $post['name'];
+        $create->password = $post['password'];
+        $create->typeuser = $post['type'];
+        $create->save();
+        $this->response->getBody()->write(json_encode(['data' => $post]));
+        return $this->response->withHeader('Content-Type', 'application/json')->withStatus(200);
+
+      }
     } catch (Exception $e) {
-      var_export('oi');
-      return $this->response->withStatus(500)->withJson(['error' => $e->getMessage()]);
+      return Header::validateRequest(500, 'Error inreno no servidor');
     }
    }
 }

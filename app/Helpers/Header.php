@@ -42,4 +42,15 @@ class Header{
         ]));
         return $response->withHeader('Content-Type', CONTENT_TYPE_JSON)->withStatus($status);
     }
+
+    public static function validateRequest($status, $msg){
+        $response = new \Slim\Psr7\Response();
+        $response->getBody()->write(json_encode([
+            'message'=> $msg,
+            'status'=> $status,
+        ]));
+    return $response->withHeader('Content-Type', CONTENT_TYPE_JSON)->withStatus($status);
+
+                
+    }
 }

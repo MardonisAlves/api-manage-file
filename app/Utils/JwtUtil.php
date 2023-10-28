@@ -3,6 +3,8 @@ namespace App\Utils;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use App\Helpers\Header;
+use App\Model\User;
+use Exception;
 
 class JwtUtil {
     public static function generateToken($data) {
@@ -24,8 +26,17 @@ class JwtUtil {
         $key = new Key($_ENV['SECRET_KEY'], 'HS256');
         return JWT::decode($jwt, $key);
 
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         return Header::jwtHeader($e, 401);
        }
+    }
+
+    public static function verifyUserEmail($email){
+        try {
+            return User::where('email', $email)->first();
+           
+        } catch (Exception $e) {
+            return $e;
+        }
     }
 }
