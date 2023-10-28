@@ -14,7 +14,7 @@ use Exception;
       if($users->isEmpty()) {
        return Header::validateRequest(204, 'Usuário nao encontrado');
       } else {
-      return Header::headerToArray($users, $this->response, 200);
+      return Header::headerToArray($users, $this->response, 200, 'Usuários');
 
       }
 
@@ -38,11 +38,11 @@ use Exception;
         $create = new User;
         $create->email = $post['email'];
         $create->name = $post['name'];
-        $create->password = $post['password'];
+        $create->password = password_hash($post['password'], PASSWORD_DEFAULT, ['cost' => 12]);
         $create->typeuser = $post['type'];
         $create->save();
-        $this->response->getBody()->write(json_encode(['data' => $post]));
-        return $this->response->withHeader('Content-Type', 'application/json')->withStatus(200);
+
+        return Header::headerToArray($create, $this->response, 200,'Usuário cadastrado com sucesso');
 
       }
     } catch (Exception $e) {

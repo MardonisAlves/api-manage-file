@@ -12,10 +12,7 @@ abstract class BaseController
 
     public function __construct(Request $request, Response $response)
     {
-       
         $this->request = $request;
         $this->response = $response;
-      
-
     }
 }

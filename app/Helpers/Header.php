@@ -6,9 +6,9 @@ use App\Helpers\AbstractLogger;
 define('CONTENT_TYPE_JSON', 'application/json');
 class Header{
 
-    public static function headerToArray($data, $response, $status){
+    public static function headerToArray($data, $response, $status, $message){
         $usersArray = $data->toArray();
-        $response->getBody()->write(json_encode(['data' => $usersArray]));
+        $response->getBody()->write(json_encode(['data' => $usersArray, 'message' => $message]));
         return $response->withHeader('Content-Type', CONTENT_TYPE_JSON)->withStatus($status);
     }
     

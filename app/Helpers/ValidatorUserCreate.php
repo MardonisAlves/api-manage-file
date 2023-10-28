@@ -2,10 +2,7 @@
 
 namespace App\Helpers;
 define('CONTENT_TYPE_JSON', 'application/json');
-use App\Helpers\AbstractLogger;
-use App\Controllers\BaseController;
 use Psr\Http\Message\RequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 use Valitron\Validator as v;
 use App\Helpers\Header;
 

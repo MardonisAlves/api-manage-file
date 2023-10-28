@@ -2,9 +2,6 @@
 
 use App\Controllers\UserController;
 use App\Controllers\AuthController;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Illuminate\Database\Capsule\Manager as Capsule;
 use Slim\Routing\RouteCollectorProxy;
 use App\Middleware\JwtMiddleware;
 use App\Helpers\ValidatorUserCreate;
@@ -29,7 +26,7 @@ $app->group('/users',  function(RouteCollectorProxy $group){
 
 
 
-$app->post('/auth', function($request, $response) use ($container) {
+$app->post('/auth', function($request, $response){
 $auth = new AuthController($request, $response);
 return $auth->auth();
 });

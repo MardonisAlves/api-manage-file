@@ -3,7 +3,6 @@ namespace App\Middleware;
 use App\Utils\JwtUtil;
 use Psr\Http\Message\RequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
-use Slim\Routing\RouteContext;
 use App\Helpers\Header;
 
 class JwtMiddleware{
