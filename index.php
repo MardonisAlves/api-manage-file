@@ -1,12 +1,11 @@
 <?php
-use App\Middleware\JwtMiddleware;
-use Pecee\SimpleRouter\SimpleRouter;
 
 require_once 'vendor/autoload.php';
-require_once 'app/config/db.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 
 require_once 'app/route/web.php';
-SimpleRouter::start();
+
 
 
 

@@ -1,48 +1,33 @@
 <?php
 namespace App\Middleware;
 use App\Utils\JwtUtil;
-use App\Exceptions\UnauthorizedException;
-use Firebase\JWT\JWT;
-use Pecee\Http\Middleware\IMiddleware;
-use Pecee\Http\Request;
-use Pecee\Http\Response;
+use Psr\Http\Message\RequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
+use App\Helpers\Header;
 
-
-class JwtMiddleware implements IMiddleware{
-
-    public function handle(Request $request):void {
-        $token = $request->getHeader('Authorization');
-
-        if (!$token) {
-            $response = new Response($request);
-            $response->json(['error' => 'Unauthorized']);
-            $response->send();
-        }
-
-        $token = str_replace('Bearer ', '', $token);
-    
+class JwtMiddleware{
+    public function __invoke(Request $request, $handler): Response {
+       
         try {
-      
-        $decode = JwtUtil::decodeJwt($token);
-        $responseArray = json_decode($decode, true);
-        if(isset($responseArray['error'])){
-            $response = new Response($request);
-             $response->json($responseArray);
-             $response->send();
-        }
-
+           return $this->verifyTokem($request, $handler);
         } catch (\Exception $e) {
-            $response = new Response($request);
-            $response->json(['error' => 'Unauthorized']);
-            $response->send();
+           return Header::jwtHeaderError($e, 401);
+        }
+        
+}
+
+public static function verifyTokem($request, $handler){
+    $token = $request->getHeaderLine('Authorization');
+    if (empty($token)) {
+        $response = new \Slim\Psr7\Response();
+        $response->getBody()->write(json_encode(['error' => 'Token não fornecido']));
+       return $response->withHeader('Content-Type', 'application/json')->withStatus(401);
+     
+    }else{
+        $verify = JwtUtil::decodeJwt($token);
+        if(property_exists($verify, 'iat')){
+            return $handler->handle($request);
         }
     }
 }
-
-$request = new Request();
-$response = new Response($request);
-
-$md = new JwtMiddleware($request, $response);
-$md->handle($request);
-
-
+}
