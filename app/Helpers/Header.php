@@ -9,6 +9,7 @@ class Header{
     public static function headerToArray($data, $response, $status, $message){
         $usersArray = $data->toArray();
         $response->getBody()->write(json_encode(['data' => $usersArray, 'message' => $message]));
+        AbstractLogger::message($message, $status);
         return $response->withHeader('Content-Type', CONTENT_TYPE_JSON)->withStatus($status);
     }
     
@@ -30,6 +31,7 @@ class Header{
             'status' => $status,
             'tokem' => $jwt
         ]));
+        AbstractLogger::message('Jwt created success', $status);
         return $response->withHeader('Content-Type', CONTENT_TYPE_JSON)->withStatus($status);
     }
 
@@ -40,6 +42,7 @@ class Header{
             'status' => $status,
             'error' => $err
         ]));
+       
         return $response->withHeader('Content-Type', CONTENT_TYPE_JSON)->withStatus($status);
     }
 
@@ -49,8 +52,7 @@ class Header{
             'message'=> $msg,
             'status'=> $status,
         ]));
+    AbstractLogger::message($msg, $status);
     return $response->withHeader('Content-Type', CONTENT_TYPE_JSON)->withStatus($status);
-
-                
     }
 }

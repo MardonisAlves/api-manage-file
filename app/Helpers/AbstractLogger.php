@@ -14,4 +14,10 @@ abstract class AbstractLogger{
         $log->pushHandler(new StreamHandler(__DIR__.'/logs/app.log', Level::Warning));
         $log->error('error',['error' => $e->getMessage(), 'status' => $status]);
     }
+
+    public static function message($message, $status){
+        $log = new Logger('my_logger');
+        $log->pushHandler(new StreamHandler(__DIR__.'/logs/app.log', Level::Warning));
+        $log->error($message, ['status'=> $status]);
+    }
 }
