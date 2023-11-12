@@ -1,12 +1,12 @@
 <?php
 return  [
     
-        'driver'   =>'mysql',
-        'host'     => '127.0.0.1',
-        'port'     => 3307,
-        'database' => 'manage_file',
-        'username' => 'root',
+        'driver'   => $_ENV['DRIVER'],
+        'host'     => $_ENV['HOST'],
+        'port'     => $_ENV['PORT'],
+        'database' => $_ENV['DATABASE'],
+        'username' => $_ENV['USERNAME'],
         'password' => '',
-        'charset'  => 'utf8'
+        'charset'  => $_ENV['CHARSET']
 ];
   
