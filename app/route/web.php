@@ -20,7 +20,7 @@ $app->group('/users',  function(RouteCollectorProxy $group){
         return $userController->create();
     })->add(new ValidatorUserCreate());
 
-})->add(new JwtMiddleware());
+});//->add(new JwtMiddleware());
 
 
 

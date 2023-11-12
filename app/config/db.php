@@ -1,12 +1,12 @@
 <?php
 return  [
     
-        'driver'   =>'pgsql',
-        'host'     => '172.17.0.4',
-        'port'     => 5432,
-        'database' => 'postgres',
-        'username' => 'mardonis',
-        'password' => 'jk8yup02@',
+        'driver'   =>'mysql',
+        'host'     => '127.0.0.1',
+        'port'     => 3307,
+        'database' => 'manage_file',
+        'username' => 'root',
+        'password' => '',
         'charset'  => 'utf8'
 ];
   

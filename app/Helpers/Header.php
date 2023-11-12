@@ -2,8 +2,6 @@
 
 namespace App\Helpers;
 use App\Helpers\AbstractLogger;
-
-define('CONTENT_TYPE_JSON', 'application/json');
 class Header{
 
     public static function headerToArray($data, $response, $status, $message){

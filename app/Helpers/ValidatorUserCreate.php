@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Helpers;
-define('CONTENT_TYPE_JSON', 'application/json');
 use Psr\Http\Message\RequestInterface as Request;
 use Valitron\Validator as v;
 use App\Helpers\Header;

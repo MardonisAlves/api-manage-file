@@ -31,7 +31,6 @@ use Exception;
       $post = json_decode($data, true);
 
       $verifyUser = JwtUtil::verifyUserEmail($post['email']);
-
       if(!empty($verifyUser)){
        return Header::validateRequest(200, 'Usuário ja esta cadastrado');
       }else{
@@ -46,7 +45,7 @@ use Exception;
 
       }
     } catch (Exception $e) {
-      return Header::validateRequest(500, 'Error inreno no servidor');
+      return Header::validateRequest(500, $e->getMessage());
     }
    }
 }
