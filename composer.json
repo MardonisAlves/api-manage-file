@@ -27,6 +27,7 @@
         "davidepastore/slim-validation": "^3.0",
         "monolog/monolog": "^3.4",
         "vlucas/valitron": "^1.4",
-        "imagekit/imagekit": "^3.0"
+        "imagekit/imagekit": "^3.0",
+        "guzzlehttp/guzzle": "^7.0"
     }
 }
