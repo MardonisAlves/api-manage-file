@@ -2,12 +2,17 @@
 
 use App\Controllers\UserController;
 use App\Controllers\AuthController;
+use App\Controllers\UploadFileController;
 use Slim\Routing\RouteCollectorProxy;
 use App\Middleware\JwtMiddleware;
 use App\Helpers\ValidatorUserCreate;
 
 include_once 'dependeces.php';
 
+$app->post('/auth', function($request, $response){
+    $auth = new AuthController($request, $response);
+    return $auth->auth();
+    });
 
 $app->group('/users',  function(RouteCollectorProxy $group){
     $group->get('/findall',  function ($request, $response){
@@ -23,13 +28,13 @@ $app->group('/users',  function(RouteCollectorProxy $group){
 })->add(new JwtMiddleware());
 
 
+$app->group('/upload', function(RouteCollectorProxy $group){
+    $group->post('/create', function ($request, $response){
+        $createUpload = new UploadFileController($request, $response);
+        return $createUpload->createUpload();
+    });
+})->add(new JwtMiddleware());
 
-
-
-$app->post('/auth', function($request, $response){
-$auth = new AuthController($request, $response);
-return $auth->auth();
-});
 
 $app->addErrorMiddleware(true, true, true);
 $app->run();

@@ -1,12 +1,12 @@
 <?php
 return  [
     
-        'driver'   =>'pgsql',
-        'host'     => '172.17.0.4',
-        'port'     => 5432,
-        'database' => 'postgres',
-        'username' => 'mardonis',
-        'password' => 'jk8yup02@',
-        'charset'  => 'utf8'
+        'driver'   => $_ENV['DRIVER'],
+        'host'     => $_ENV['HOST'],
+        'port'     => $_ENV['PORT'],
+        'database' => $_ENV['DATABASE'],
+        'username' => $_ENV['USERNAME'],
+        'password' => '',
+        'charset'  => $_ENV['CHARSET']
 ];
   
