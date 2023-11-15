@@ -27,16 +27,6 @@ class UploadUtil
                 "tags" => ['tag1']
             ]);
 
-            var_dump($file);
-           // return Header::validateRequest((int)201, 'Teste');
-
-            // if ($file->error) {
-            //     var_dump($file->error);
-            //     $error = json_encode($file->error);
-            //    throw new Exception($error);
-            // } else {
-            //     return Header::validateRequest((int)201, 'Teste');
-            // }
 
         } catch (Exception $th) {
             var_dump($th);  
