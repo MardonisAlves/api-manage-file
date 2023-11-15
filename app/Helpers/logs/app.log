@@ -138,3 +138,5 @@
 [2023-10-28T11:38:15.981290-03:00] my_logger.ERROR: error {"error":"Invalid HTTP status code.","status":401} []
 [2023-10-28T12:16:21.143162-03:00] my_logger.ERROR: error {"error":"Invalid HTTP status code.","status":401} []
 [2023-10-28T12:22:38.400828-03:00] my_logger.ERROR: error {"error":"Invalid HTTP status code.","status":401} []
+[2023-11-15T19:48:58.741896+00:00] my_logger.ERROR: error {"error":"Invalid HTTP status code.","status":401} []
+[2023-11-15T19:49:23.190421+00:00] my_logger.ERROR: error {"error":"Invalid HTTP status code.","status":401} []

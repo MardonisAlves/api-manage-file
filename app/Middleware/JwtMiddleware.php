@@ -11,7 +11,7 @@ class JwtMiddleware{
         try {
            return $this->verifyTokem($request, $handler);
         } catch (\Exception $e) {
-           return Header::jwtHeaderError($e, 401);
+           return Header::jwtHeaderError($e, (int)401);
         }
         
 }
@@ -21,12 +21,16 @@ public static function verifyTokem($request, $handler){
     if (empty($token)) {
         $response = new \Slim\Psr7\Response();
         $response->getBody()->write(json_encode(['error' => 'Token não fornecido']));
-       return $response->withHeader('Content-Type', 'application/json')->withStatus(401);
+       return $response->withHeader('Content-Type', 'application/json')->withStatus((int)401);
      
     }else{
         $verify = JwtUtil::decodeJwt($token);
         if(property_exists($verify, 'iat')){
             return $handler->handle($request);
+        }else{
+            $response = new \Slim\Psr7\Response();
+            $response->getBody()->write(json_encode(['error' => 'Token não fornecido']));
+           return $response->withHeader('Content-Type', 'application/json')->withStatus((int)401);
         }
     }
 }

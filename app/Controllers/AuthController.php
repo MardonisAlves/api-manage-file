@@ -18,12 +18,12 @@ class AuthController extends BaseController{
          $verify = password_verify($post['password'], $user->password);
 
          if(empty($user) || $verify === false){
-            return Header::validateRequest(401, 'Por favor verificar suas credenciais de acesso');
+            return Header::validateRequest((int)401, 'Por favor verificar suas credenciais de acesso');
          }else{
             return JwtUtil::generateToken($user->id);
          }
         } catch (Exception $e) {
-         return Header::validateRequest(500, $e->getMessage());
+         return Header::validateRequest((int)500, $e->getMessage());
         }
    
    }

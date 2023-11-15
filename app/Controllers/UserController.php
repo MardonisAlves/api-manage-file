@@ -12,14 +12,14 @@ use Exception;
      try {
       $users = User::with('Endress')->get();
       if($users->isEmpty()) {
-       return Header::validateRequest(204, 'Usuário nao encontrado');
+       return Header::validateRequest((int)204, 'Usuário nao encontrado');
       } else {
-      return Header::headerToArray($users, $this->response, 200, 'Usuários');
+      return Header::headerToArray($users, $this->response, (int)200, 'Usuários');
 
       }
 
      } catch (\UnexpectedValueException $e) {
-      return Header::validateRequest(500, 'Error inreno no servidor');
+      return Header::validateRequest((int)500, 'Error inreno no servidor');
      }
         
    }
@@ -32,7 +32,7 @@ use Exception;
 
       $verifyUser = JwtUtil::verifyUserEmail($post['email']);
       if(!empty($verifyUser)){
-       return Header::validateRequest(200, 'Usuário ja esta cadastrado');
+       return Header::validateRequest((int)200, 'Usuário ja esta cadastrado');
       }else{
         $create = new User;
         $create->email = $post['email'];
@@ -40,12 +40,13 @@ use Exception;
         $create->password = password_hash($post['password'], PASSWORD_DEFAULT, ['cost' => 12]);
         $create->typeuser = $post['type'];
         $create->save();
+        
 
-        return Header::headerToArray($create, $this->response, 200,'Usuário cadastrado com sucesso');
+        return Header::headerToArray($create, $this->response, (int)200,'Usuário cadastrado com sucesso');
 
       }
     } catch (Exception $e) {
-      return Header::validateRequest(500, $e->getMessage());
+      return Header::validateRequest((int)500, $e->getMessage());
     }
    }
 }
