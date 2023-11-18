@@ -9,7 +9,7 @@ class JwtMiddleware{
     public function __invoke(Request $request, $handler): Response {
        
         try {
-           return $this->verifyTokem($request, $handler);
+           return  $this->verifyTokem($request, $handler);
         } catch (\Exception $e) {
            return Header::jwtHeaderError($e, (int)401);
         }
@@ -19,18 +19,15 @@ class JwtMiddleware{
 public static function verifyTokem($request, $handler){
     $token = $request->getHeaderLine('Authorization');
     if (empty($token)) {
-        $response = new \Slim\Psr7\Response();
-        $response->getBody()->write(json_encode(['error' => 'Token não fornecido']));
-       return $response->withHeader('Content-Type', 'application/json')->withStatus((int)401);
-     
+    return Header::validateRequest('Token não fornecido', (int)401);
     }else{
+
         $verify = JwtUtil::decodeJwt($token);
-        if(property_exists($verify, 'iat')){
+
+        if(property_exists($verify, 'exp')){
             return $handler->handle($request);
         }else{
-            $response = new \Slim\Psr7\Response();
-            $response->getBody()->write(json_encode(['error' => 'Token não fornecido']));
-           return $response->withHeader('Content-Type', 'application/json')->withStatus((int)401);
+           return Header::validateRequest('Fazer login novamente', (int)401);
         }
     }
 }

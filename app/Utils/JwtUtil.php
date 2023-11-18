@@ -8,12 +8,11 @@ use Exception;
 
 class JwtUtil {
     public static function generateToken($data) {
+
         $payload = [
-            'iss' => 'http://example.org',
-            'aud' => 'http://example.com',
             'iat' => $data,
             'nbf' => 1357000000,
-            "exp" => time() + (60 *60 *24)
+            "exp" => time() + (60)
         ];
         
         $jwt = JWT::encode($payload, $_ENV['SECRET_KEY'], 'HS256');
@@ -27,7 +26,7 @@ class JwtUtil {
         return JWT::decode($jwt, $key);
 
     } catch (Exception $e) {
-        return Header::jwtHeader($e, 401);
+        return Header::jwtHeader($e->getMessage(), 401);
        }
     }
 

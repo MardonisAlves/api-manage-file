@@ -33,6 +33,11 @@ $app->group('/upload', function(RouteCollectorProxy $group){
         $createUpload = new UploadFileController($request, $response);
         return $createUpload->createUpload();
     });
+
+    $group->delete('/delete', function ($request, $response){
+        $createUpload = new UploadFileController($request, $response);
+        return $createUpload->deleteUpload();
+    });
 })->add(new JwtMiddleware());
 
 

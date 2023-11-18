@@ -1,12 +1,10 @@
 <?php
-namespace App\Utils;
+namespace App\ServicesHttp;
 use App\Helpers\Header;
+use App\Utils\GuzzHttp;
 use Exception;
-;
 
-
-
-class UploadUtil
+class UploadService
 {
 
     public static function sendFile($namefile)
@@ -32,6 +30,7 @@ class UploadUtil
             ]);
             $statusCode = $response->getStatusCode();
             $body = json_decode($response->getBody()->getContents());
+            // save upload no banco 
             unlink($filePath);
             return Header::validateRequest($statusCode, $body);
             } else {
@@ -39,6 +38,26 @@ class UploadUtil
             }
         } catch (Exception $th) {
             return Header::validateRequest((int) 500, 'Erro durante o upload: ' . $th->getMessage());
+        }
+    }
+
+    public static function deleteFile($fileId){
+        try {
+        
+            $client = GuzzHttp::ClientHttp();
+           
+            $response = $client->request('DELETE', "files/{$fileId['fileId']}");
+            $statusCode = $response->getStatusCode();
+            if($statusCode === 204) {        
+                var_dump($client);
+                return Header::validateRequest((int) $statusCode, 'File deletado com sucesso');
+            }else{
+                return Header::validateRequest((int) 404, 'File  deletado com sucesso ');
+            }
+
+        } catch (\Throwable $th) {
+
+            return Header::validateRequest((int) 500,  $th->getMessage()); 
         }
     }
 
