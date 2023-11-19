@@ -21,7 +21,7 @@ class GuzzHttp
                 'verify' => false,
                 'headers' => [
                     'Authorization' => 'Basic ' . $encode64,
-                    'Content-Type' => 'application/x-www-form-urlencoded',
+                    'Content-Type' => 'application/x-www-form-urlencoded'
                 ],
             ]);
             return $client;

@@ -61,4 +61,46 @@ class UploadService
         }
     }
 
+    public static function listFileUpload(){
+        try {
+            $client = GuzzHttp::ClientHttp();
+            $response = $client->request('GET', 'files');
+            $body = json_decode($response->getBody()->getContents());
+            $statusCode = $response->getStatusCode();
+
+            return Header::validateRequest($statusCode, $body);
+        } catch (Exception $e) {
+            return Header::validateRequest((int) 500,  $e->getMessage());
+        }
+    }
+
+    public static function deleteFileUpload($nameFolder){
+        try {
+            $client = GuzzHttp::ClientHttp();
+            $response = $client->request('POST','folder',['folderName'=> $nameFolder]);
+            $statusCode = $response->getStatusCode();
+            $body = json_decode($response->getBody()->getContents());
+            return Header::validateRequest($statusCode, $body);
+        } catch (\Throwable $th) {
+            return Header::validateRequest((int) 500, $th->getMessage());
+        }
+    }
+
+    public static function createFolder($nameFolder) {
+        try {
+            $client = GuzzHttp::ClientHttp();
+            $response = $client->request('POST','folder',[
+                'json' => [
+                    'folderName'=> $nameFolder,
+                    'parentFolderPath' => 'minhas/images/'
+                    ]
+            ]
+        );
+            $statusCode = $response->getStatusCode();
+            return Header::validateRequest($statusCode, 'Folder created success');
+        } catch (\Throwable $th) {
+            return Header::validateRequest((int)500, $th->getMessage());
+        }
+    }
+
 }

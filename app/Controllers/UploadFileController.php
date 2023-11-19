@@ -35,4 +35,23 @@ class UploadFileController extends BaseController
       return Header::validateRequest((int) 500, $th->getMessage());
     }
   }
+
+  public static function listUpload(){
+    try {
+      return UploadService::listFileUpload();
+    } catch (Exception $e) {
+      return Header::validateRequest((int)500, $e->getMessage());
+    }
+  }
+
+  public function createFolder(){
+    try {
+      $data =  $this->request->getBody();
+      $post = json_decode($data, true);
+      return UploadService::createFolder($post['folder']);
+
+    } catch (\Throwable $th) {
+      return Header::validateRequest((int)500, $th->getMessage());
+    }
+  }
 }

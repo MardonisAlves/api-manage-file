@@ -12,7 +12,7 @@ class JwtUtil {
         $payload = [
             'iat' => $data,
             'nbf' => 1357000000,
-            "exp" => time() + (60)
+            "exp" => time() + (60 *60*24),
         ];
         
         $jwt = JWT::encode($payload, $_ENV['SECRET_KEY'], 'HS256');
