@@ -28,10 +28,26 @@ $app->group('/users',  function(RouteCollectorProxy $group){
 })->add(new JwtMiddleware());
 
 
+
 $app->group('/upload', function(RouteCollectorProxy $group){
     $group->post('/create', function ($request, $response){
         $createUpload = new UploadFileController($request, $response);
         return $createUpload->createUpload();
+    });
+
+    $group->delete('/delete', function ($request, $response){
+        $createUpload = new UploadFileController($request, $response);
+        return $createUpload->deleteUpload();
+    });
+
+    $group->get('/list', function ($request, $response){    
+        $createUpload = new UploadFileController($request, $response);
+        return $createUpload->listUpload();
+    });
+
+    $group->post('/folder', function ($request, $response){
+        $createUpload = new UploadFileController($request, $response);
+        return $createUpload->createFolder();
     });
 })->add(new JwtMiddleware());
 
