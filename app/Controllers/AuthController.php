@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 use App\Controllers\BaseController;
-use App\Helpers\AbstractLogger;
 use App\Helpers\Header;
 use Exception;
 use App\Utils\JwtUtil;
