@@ -18,7 +18,9 @@ class UploadFileController extends BaseController
         return Header::validateRequest((int) 400, 'Por favor selecinar um file');
       } else {
         $uploadedFile->moveTo(__DIR__ . './../../uploads/' . $uploadedFile->getClientFilename());
-        return UploadService::sendFile($uploadedFile->getClientFilename());
+        /* save path and thumbnails */
+        $uploadFile = UploadService::sendFile($uploadedFile->getClientFilename());
+        
       }
 
     } catch (Exception $e) {

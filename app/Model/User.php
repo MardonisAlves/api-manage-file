@@ -12,4 +12,9 @@ class User extends Model {
     public function endress(): HasOne{
         return $this->hasOne(Endress::class, 'userId');
     }
+
+    public function permission(): HasOne{
+        return $this->hasOne(Permission::class);
+    }
+
 }
