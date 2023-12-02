@@ -22,15 +22,10 @@ public static function verifyTokem($request, $handler){
     return Header::validateRequest((int)401, 'Token não fornecido');
     }else{
         $verify = JwtUtil::decodeJwt($token);
-        if(property_exists($verify, 'exp')){
-            if($verify->permission->permission > 0) {
-                return $handler->handle($request);
-            }else{
-                return Header::validateRequest((int)401, 'Usuário sem premisison');
-            }
-            
+        if(property_exists($verify, 'exp') && $verify->permission->permission > 0) {
+            return $handler->handle($request);
         }else{
-           return Header::validateRequest((int)401, 'Fazer login novamente');
+           return Header::validateRequest((int)401, 'Por favor verificar suas credenciais de acesso');
         }
     }
 }

@@ -30,7 +30,7 @@ class UploadService
             ]);
             $statusCode = $response->getStatusCode();
             $body = json_decode($response->getBody()->getContents());
-            // save upload no banco 
+            // save upload no banco
             unlink($filePath);
             return Header::validateRequest($statusCode, $body);
             } else {
@@ -43,12 +43,10 @@ class UploadService
 
     public static function deleteFile($fileId){
         try {
-        
             $client = GuzzHttp::ClientHttp();
-           
             $response = $client->request('DELETE', "files/{$fileId['fileId']}");
             $statusCode = $response->getStatusCode();
-            if($statusCode === 204) {        
+            if($statusCode === 204) {
                 var_dump($client);
                 return Header::validateRequest((int) $statusCode, 'File deletado com sucesso');
             }else{
@@ -56,8 +54,7 @@ class UploadService
             }
 
         } catch (\Throwable $th) {
-
-            return Header::validateRequest((int) 500,  $th->getMessage()); 
+            return Header::validateRequest((int) 500,  $th->getMessage());
         }
     }
 
@@ -102,5 +99,4 @@ class UploadService
             return Header::validateRequest((int)500, $th->getMessage());
         }
     }
-
 }

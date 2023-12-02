@@ -6,8 +6,9 @@ use App\Controllers\UploadFileController;
 use Slim\Routing\RouteCollectorProxy;
 use App\Middleware\JwtMiddleware;
 use App\Helpers\ValidatorUserCreate;
+use App\Dependeces\Dependeces;
 
-include_once 'dependeces.php';
+$app =  Dependeces::dependeces();
 
 $app->post('/auth', function($request, $response){
     $auth = new AuthController($request, $response);
@@ -40,7 +41,7 @@ $app->group('/upload', function(RouteCollectorProxy $group){
         return $createUpload->deleteUpload();
     });
 
-    $group->get('/list', function ($request, $response){    
+    $group->get('/list', function ($request, $response){
         $createUpload = new UploadFileController($request, $response);
         return $createUpload->listUpload();
     });

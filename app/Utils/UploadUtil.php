@@ -20,7 +20,7 @@ class UploadUtil
             $filePath = __DIR__. './../../uploads/'.$namefile;
             $base64 = base64_encode(file_get_contents($filePath));
                         
-            $file = $imageKit->upload([
+            return $imageKit->upload([
                 'file' => $base64,
                 'fileName' => $namefile,
                 "folder" => "/teste",
@@ -29,9 +29,7 @@ class UploadUtil
 
 
         } catch (Exception $th) {
-            var_dump($th);  
             return Header::validateRequest((int) 500, 'Erro durante o upload: ' . $th->getMessage());
         }
     }
-
 }

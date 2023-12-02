@@ -3,20 +3,17 @@ namespace App\Utils;
 
 use App\Helpers\Header;
 use GuzzleHttp\Client;
-
 class GuzzHttp
 {
 
-    public static function ClientHttp()
+    public static function clientHttp()
     {
         try {
             $urlEndpoint = $_ENV['URL_ENDPOINT'];
             $privateBase64 = $_ENV['PRIVATE_KEY'];
             $publicBase64 = $_ENV['PUBLIC_KEY'];
             $encode64 = base64_encode($privateBase64 . ':' . $publicBase64);
-
-            ;
-            $client = new Client([
+           return new Client([
                 'base_uri' => $urlEndpoint,
                 'verify' => false,
                 'headers' => [
@@ -24,7 +21,7 @@ class GuzzHttp
                     'Content-Type' => 'application/x-www-form-urlencoded'
                 ],
             ]);
-            return $client;
+           
         } catch (\Throwable $th) {
             return Header::validateRequest((int) 500, $th->getMessage());
         }

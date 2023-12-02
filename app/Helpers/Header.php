@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Helpers;
 use App\Helpers\AbstractLogger;
 class Header{
@@ -48,7 +47,5 @@ class Header{
             'status'=> (int)$status,
         ]));
     return $response->withHeader('Content-Type', CONTENT_TYPE_JSON)->withStatus((int)$status);
-
-                
     }
 }

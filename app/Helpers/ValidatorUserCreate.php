@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Helpers;
 use Psr\Http\Message\RequestInterface as Request;
 use Valitron\Validator as v;
