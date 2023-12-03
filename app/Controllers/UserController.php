@@ -4,6 +4,7 @@ use App\Controllers\BaseController;
 use App\Model\User;
 use App\Helpers\Header;
 use App\Utils\JwtUtil;
+use App\Helpers\Sanitize;
 use Exception;
 
  class UserController extends BaseController{
@@ -28,19 +29,20 @@ use Exception;
     try {
       $data =  $this->request->getBody();
       $post = json_decode($data, true);
-
-      $verifyUser = JwtUtil::verifyUserEmail($post['email']);
+      $email = Sanitize::strinGsanitize($post['email']);
+      $verifyUser = JwtUtil::verifyUserEmail($email);
       if(!empty($verifyUser)){
        return Header::validateRequest((int)200, 'Usuário ja esta cadastrado');
       }else{
+
+        $passWordHash = Sanitize::strinGsanitize($post['password']);
         $create = new User;
-        $create->email = $post['email'];
-        $create->name = $post['name'];
-        $create->password = password_hash($post['password'], PASSWORD_DEFAULT, ['cost' => 12]);
-        $create->typeuser = $post['type'];
+        $create->email = Sanitize::strinGsanitize($post['email']);
+        $create->name = Sanitize::strinGsanitize($post['name']);
+        $create->password = password_hash($passWordHash, PASSWORD_DEFAULT, ['cost' => 12]);
+        $create->typeuser = Sanitize::strinGsanitize($post['type']);
         $create->save();
         
-
         return Header::headerToArray($create, $this->response, (int)200,'Usuário cadastrado com sucesso');
 
       }

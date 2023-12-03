@@ -3,6 +3,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Helpers\Header;
 use App\ServicesHttp\UploadService;
+use App\Helpers\Sanitize;
 use Exception;
 class UploadFileController extends BaseController
 {
@@ -12,14 +13,12 @@ class UploadFileController extends BaseController
 
       $requestFile = $this->request->getUploadedFiles();
       $uploadedFile = $requestFile['file'];
-      if (!empty($uploadedFile['file'])) {
+  
+      if (empty($requestFile['file'])) {
         return Header::validateRequest((int) 400, 'Por favor selecinar um file');
       } else {
         $uploadedFile->moveTo(__DIR__ . './../../uploads/' . $uploadedFile->getClientFilename());
-        /* save path and thumbnails */
       return UploadService::sendFile($uploadedFile->getClientFilename());
-        
-        
       }
 
     } catch (Exception $e) {
@@ -31,7 +30,7 @@ class UploadFileController extends BaseController
   public function deleteUpload(){
     try {
       $paramValue = $this->request->getQueryParams();
-      return UploadService::deleteFile($paramValue);
+      return UploadService::deleteFile(Sanitize::strinGsanitize($paramValue['fileId']));
     } catch (\Throwable $th) {
       return Header::validateRequest((int) 500, $th->getMessage());
     }
@@ -49,7 +48,7 @@ class UploadFileController extends BaseController
     try {
       $data =  $this->request->getBody();
       $post = json_decode($data, true);
-      return UploadService::createFolder($post['folder']);
+      return UploadService::createFolder(Sanitize::strinGsanitize($post['folder']));
 
     } catch (\Throwable $th) {
       return Header::validateRequest((int)500, $th->getMessage());
