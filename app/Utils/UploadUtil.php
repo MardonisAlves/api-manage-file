@@ -26,8 +26,6 @@ class UploadUtil
                 "folder" => "/teste",
                 "tags" => ['tag1']
             ]);
-
-
         } catch (Exception $th) {
             return Header::validateRequest((int) 500, 'Erro durante o upload: ' . $th->getMessage());
         }

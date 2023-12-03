@@ -25,26 +25,22 @@ use Exception;
    }
 
    public function create(){
-
     try {
       $data =  $this->request->getBody();
       $post = json_decode($data, true);
-      $email = Sanitize::strinGsanitize($post['email']);
+      $email = Sanitize::emailSanitize($post['email']);
       $verifyUser = JwtUtil::verifyUserEmail($email);
       if(!empty($verifyUser)){
        return Header::validateRequest((int)200, 'Usuário ja esta cadastrado');
       }else{
-
-        $passWordHash = Sanitize::strinGsanitize($post['password']);
+        $passWordHash = Sanitize::stringSanitize($post['password']);
         $create = new User;
-        $create->email = Sanitize::strinGsanitize($post['email']);
-        $create->name = Sanitize::strinGsanitize($post['name']);
+        $create->email = Sanitize::emailSanitize($post['email']);
+        $create->name = Sanitize::stringSanitize($post['name']);
         $create->password = password_hash($passWordHash, PASSWORD_DEFAULT, ['cost' => 12]);
-        $create->typeuser = Sanitize::strinGsanitize($post['type']);
+        $create->typeuser = Sanitize::stringSanitize($post['type']);
         $create->save();
-        
         return Header::headerToArray($create, $this->response, (int)200,'Usuário cadastrado com sucesso');
-
       }
     } catch (Exception $e) {
       return Header::validateRequest((int)500, $e->getMessage());

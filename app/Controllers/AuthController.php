@@ -3,6 +3,7 @@
 namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Helpers\Header;
+use App\Helpers\Sanitize;
 use Exception;
 use App\Utils\JwtUtil;
 use App\Model\User;
@@ -13,7 +14,7 @@ class AuthController extends BaseController{
         try {
          $data =  $this->request->getBody();
          $post = json_decode($data, true);
-         $user = User::with('permission')->where('email', $post['email'])->first();
+         $user = User::with('permission')->where('email', Sanitize::emailSanitize($post['email']))->first();
          $verify = password_verify($post['password'], $user->password);
 
          if(empty($user) || $verify === false){
