@@ -2,12 +2,14 @@
 namespace App\ServicesHttp;
 use App\Helpers\Header;
 use App\Utils\GuzzHttp;
+use App\Model\Uploads;
+use App\Model\Pathkit;
 use Exception;
 
 class UploadService
 {
 
-    public static function sendFile($namefile)
+    public static function sendFile($namefile, $path, $userId)
     {
         try {
            
@@ -27,12 +29,29 @@ class UploadService
                         'name'     => 'fileName',
                         'contents' => $namefile,
                     ],
+                    [
+                        'name'     => 'folder',
+                        'contents' => $path,
+                    ],
                 ],
             ]);
             $statusCode = $response->getStatusCode();
             $body = json_decode($response->getBody()->getContents());
             unlink($filePath);
-            return Header::validateRequest($statusCode, $body);
+            $upload = new Uploads;
+            $upload->user_id = $userId;
+            $upload->url = $body->url;
+            $upload->path = $body->filePath;
+            $upload->file_name = $body->name;
+            if(isset($body->thumbnailUrl)) {
+                $upload->thumbnailUrl = $body->thumbnailUrl;
+            }else{
+                $upload->thumbnailUrl =  '';
+            }
+            $upload->fileId =  $body->fileId;
+            $upload->save();
+           return Header::validateRequest($statusCode, $body);
+           
             } else {
                 return Header::validateRequest((int) 204, 'arquivo não encontrado');
             }
@@ -76,20 +95,41 @@ class UploadService
         }
     }
 
-    public static function createFolder($nameFolder) {
+    public static function createFolder($nameFolder, $userName, $userId) {
         try {
             $client = GuzzHttp::ClientHttp();
             $response = $client->request('POST','folder',[
                 'json' => [
                     'folderName'=> $nameFolder,
-                    'parentFolderPath' => 'minhas/images/'
+                    'parentFolderPath' => 'files/'.$userName
                     ]
             ]
         );
+            /* definir um index para path_file*/
+            $path = new Pathkit;
+            $path->path_file =  'files/'.$userName.'/'.$nameFolder;
+            $path->user_id = $userId;
+            $path->save();
             $statusCode = $response->getStatusCode();
             return Header::validateRequest($statusCode, 'Folder created success');
         } catch (\Throwable $th) {
             return Header::validateRequest((int)500, $th->getMessage());
+        }
+    }
+
+    public static function deleteFolder($folderPath) {
+        try {
+            $client = GuzzHttp::ClientHttp();
+            $response = $client->request('DELETE','folder',[
+                'json' => [
+                    'folderPath' => $folderPath,
+                ]
+            ]
+        );
+            $statusCode = $response->getStatusCode();
+            return Header::validateRequest($statusCode, 'Pasta deletada com sucesso!');
+        } catch (\Throwable $e) {
+            return Header::validateRequest((int)500, $e->getMessage());
         }
     }
 

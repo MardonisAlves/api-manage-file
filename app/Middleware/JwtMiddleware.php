@@ -7,13 +7,11 @@ use App\Helpers\Header;
 
 class JwtMiddleware{
     public function __invoke(Request $request, $handler): Response {
-       
         try {
            return  $this->verifyTokem($request, $handler);
         } catch (\Exception $e) {
            return Header::jwtHeaderError($e, (int)401);
         }
-        
 }
 
 public static function verifyTokem($request, $handler){

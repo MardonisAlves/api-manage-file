@@ -3,6 +3,7 @@ namespace App\Model;
 use App\Model\Endress;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 
 class User extends Model {
@@ -15,6 +16,14 @@ class User extends Model {
 
     public function permission(): HasOne{
         return $this->hasOne(Permission::class);
+    }
+
+    public function uploads(): HasMany{
+        return $this->hasMany(Uploads::class);
+    }
+
+    public function paths(): HasMany{
+        return $this->hasMany(Paths::class);
     }
 
 }
