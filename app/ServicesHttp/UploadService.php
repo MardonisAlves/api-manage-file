@@ -97,6 +97,9 @@ class UploadService
 
     public static function createFolder($nameFolder, $userName, $userId) {
         try {
+            /* continuar aqui */
+            $ifPath = Pathkit::with('user')->where('path_file', 'files/'.$userName.'/'.$nameFolder )->first();
+            var_dump($ifPath);
             $client = GuzzHttp::ClientHttp();
             $response = $client->request('POST','folder',[
                 'json' => [
@@ -105,8 +108,10 @@ class UploadService
                     ]
             ]
         );
-            /* definir um index para path_file*/
+            /* cwrificar se o path ja existe */
+          
             $path = new Pathkit;
+            $path->
             $path->path_file =  'files/'.$userName.'/'.$nameFolder;
             $path->user_id = $userId;
             $path->save();
