@@ -2,6 +2,7 @@
 namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Helpers\Header;
+use App\Model\Pathkit;
 use App\ServicesHttp\UploadService;
 use App\Helpers\Sanitize;
 use Exception;
@@ -48,11 +49,19 @@ class UploadFileController extends BaseController
 
   public function createFolder(){
     try {
+     
       $data =  $this->request->getBody();
       $post = json_decode($data, true);
       $path =Sanitize::stringSanitize($post['folder']);
       $name =  Sanitize::stringSanitize($post['username']);
       $userId =  Sanitize::stringSanitize($post['userId']);
+
+      $pathFile =  Pathkit::where('path_file', 'files/'.$name.'/'.$path)->get();
+      $pathDecode = json_decode($pathFile, true);
+      if(count($pathDecode) > 0){
+        return Header::validateRequest((int)200, 'A pasta com este nome ja existe');
+      }
+
       return UploadService::createFolder($path, $name, $userId);
     } catch (\Throwable $th) {
       return Header::validateRequest((int)500, $th->getMessage());

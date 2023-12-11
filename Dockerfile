@@ -14,7 +14,7 @@ RUN docker-php-ext-install pdo_mysql
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Configure o PHP-FPM
-COPY php-fpm-pool.conf /etc/php/8.1/fpm/pool.d/www.conf
+COPY ./php-fpm-pool.conf /etc/php/8.1/fpm/pool.d/www.conf
 
 # Crie o diretório para os sockets do PHP-FPM
 RUN mkdir -p /var/run/php
