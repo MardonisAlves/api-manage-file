@@ -5,8 +5,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 
-class Uploads extends Model {
-    protected $table = 'Uploads';
+class Upload extends Model {
+    protected $table = 'Upload';
     protected $fillable = ['path', 'url','thumbnailUrl', 'fileId'];
 
     public function user(): BelongsTo{

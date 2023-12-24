@@ -16,15 +16,16 @@ class UploadFileController extends BaseController
       $uploadedFile = $requestFile['file'];
       $folder = Sanitize::stringSanitize($paramValue['folder']);
       $userId = Sanitize::stringSanitize($paramValue['userId']);
-  
+     
+
       if (empty($requestFile['file']) || empty($paramValue['folder']) || empty($paramValue['userId'])) {
         return Header::validateRequest((int) 400, 'Por favor selecinar um file com o nome da pasta e id user');
       } else {
         $nameFile = Sanitize::stringSanitize($uploadedFile->getClientFilename());
-        $uploadedFile->moveTo(__DIR__ . './../../uploads/'.$nameFile);
-        return UploadService::sendFile($uploadedFile->getClientFilename(), $folder, $userId);
+        return UploadService::sendFile($uploadedFile, $folder, $userId, $nameFile);
       }
     } catch (Exception $e) {
+      var_dump($e);
       return Header::validateRequest((int) 500, $e->getMessage());
     }
 

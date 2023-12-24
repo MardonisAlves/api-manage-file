@@ -1,8 +1,6 @@
 version: '3'
 services:
-
-
- # Nginx server configuration   
+  # Nginx server configuration
   web:
     network_mode: bridge
     image: nginx:1.17
@@ -17,11 +15,13 @@ services:
     ports:
       - "80:80"
 
- # Php-fpm configuration
+  # Php-fpm configuration
   php:
+    container_name: php-fpm
     network_mode: bridge
     build:
-     context: ./dockerfile
+      context: .
     volumes:
       - ./src:/var/www/html
-      - ./php:/usr/local/etc/php/php.ini
+
+
