@@ -7,6 +7,7 @@ use Slim\Routing\RouteCollectorProxy;
 use App\Middleware\JwtMiddleware;
 use App\Helpers\ValidatorUserCreate;
 use App\Dependeces\Dependeces;
+use App\Helpers\Header;
 
 class AppRoutes
 {
@@ -23,12 +24,20 @@ class AppRoutes
         $this->configureAuthRoutes();
         $this->configureUserRoutes();
         $this->configureUploadRoutes();
+        $this->configureHomeRoutes();
 
         $this->app->addErrorMiddleware(true, true, true);
         $this->app->run();
     }
 
     private function configureAuthRoutes()
+    {
+        $this->app->post('/', function ($request, $response) {
+           return Header::validateRequest(200, 'Seja bem vindo');
+        });
+    }
+
+    private function configureHomeRoutes()
     {
         $this->app->post('/auth', function ($request, $response) {
             $authController = new AuthController($request, $response);

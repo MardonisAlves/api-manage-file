@@ -13,15 +13,9 @@ use App\Helpers\Header;
         $post = json_decode($data, true);
 
         $v = new v($post);
-        $v->rule('integer','endres.telefone');
-        $v->rule('integer','endres.numero');
-        $v->rule('integer','endres.cep');
         $v->rules([
             'required' => [
-                'name', 'password', 'type', 'email',
-                'endres.rua', 'endres.bairro', 'endres.telefone',
-                'endres.numero', 'endres.cep' , 'endres.referencia'
-                
+                'name', 'password', 'type', 'email'
             ],
             'length' => [
                 ['password', 6]

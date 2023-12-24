@@ -22,8 +22,8 @@ class User extends Model {
         return $this->hasMany(Uploads::class);
     }
 
-    public function paths(): HasMany{
-        return $this->hasMany(Paths::class);
-    }
+    // public function paths(): HasMany{
+    //     return $this->hasMany(Paths::class);
+    // }
 
 }

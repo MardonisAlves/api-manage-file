@@ -2,3 +2,6 @@ vendor
 .env
 .vscode
 uploads
+.docker
+*.yaml
+Dockerfile
