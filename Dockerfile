@@ -22,15 +22,11 @@ COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 RUN rm -rf /var/www/html/uploads
 
 # Copy the local content to the container, including the "uploads" directory
-COPY src /var/www/html
+COPY . /var/www/html
 
 # Cria um novo arquivo php.ini baseado no php.ini-development
 RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
 
-RUN chown -R www-data:www-data /var/www/html/uploads && chmod -R 755 /var/www/html/uploads
-
-# Add debug commands
-RUN ls -l /var/www/html && ls -ld /var/www/html/uploads && id
 
 # Expose port 9000 (used by PHP-FPM)
 EXPOSE 9000

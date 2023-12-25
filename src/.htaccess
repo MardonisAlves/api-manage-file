@@ -1,5 +1,0 @@
-RewriteEngine On
-#RewriteCond %{REQUEST_FILENAME} !-f
-Rewritebase /
-RewriteCond $1 !^(index\.php|uploads|robots\.txt)
-RewriteRule ^ index.php [QSA,L]

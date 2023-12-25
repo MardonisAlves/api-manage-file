@@ -1,0 +1,12 @@
+# Arquivos temporários
+*.swp
+*.swo
+*.swn
+*.swo
+
+# Diretórios gerados pelo sistema
+.DS_Store
+
+# Diretórios de dependências gerados pelo Composer
+/vendor
+
