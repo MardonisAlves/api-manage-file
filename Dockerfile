@@ -27,6 +27,8 @@ COPY . /var/www/html
 # Cria um novo arquivo php.ini baseado no php.ini-development
 RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
 
+# Executar o Composer install para instalar as dependências do PHP
+RUN composer install --no-dev --optimize-autoloader
 
 # Expose port 9000 (used by PHP-FPM)
 EXPOSE 9000

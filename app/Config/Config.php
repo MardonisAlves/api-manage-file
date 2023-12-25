@@ -13,7 +13,7 @@ class Config
             'database' => $_ENV['PGSQL_DATABASE'],
             'username' => $_ENV['PGSQL_USER'],
             'password' => $_ENV['PGSQL_PASSWORD'],
-            'charset' => $_ENV['CHARSET']
+            'charset' => $_ENV['CHARSET'],
         ];
     }
 }

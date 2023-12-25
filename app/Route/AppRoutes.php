@@ -32,7 +32,7 @@ class AppRoutes
 
     private function configureAuthRoutes()
     {
-        $this->app->post('/', function ($request, $response) {
+        $this->app->get('/', function ($request, $response) {
            return Header::validateRequest(200, 'Seja bem vindo');
         });
     }
