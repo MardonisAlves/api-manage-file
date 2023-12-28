@@ -7,13 +7,12 @@ class Config
     protected static function connectionDb()
     {
         return [
-            'driver' => $_ENV['PGSQL_DRIVER'],
-            'host' => $_ENV['PGSQL_HOST'],
-            'port' => $_ENV['PGSQL_PORT'],
-            'database' => $_ENV['PGSQL_DATABASE'],
-            'username' => $_ENV['PGSQL_USER'],
-            'password' => $_ENV['PGSQL_PASSWORD'],
-            'charset' => $_ENV['CHARSET'],
+            'driver' => $_ENV['MYSQL_DRIVER'],
+            'host' => $_ENV['MYSQL_HOST'],
+            'port' => $_ENV['MYSQL_PORT'],
+            'database' => $_ENV['MYSQL_DATABASE'],
+            'username' => $_ENV['MYSQL_USER'],
+            'password' => $_ENV['MYSQL_PASSWORD']
         ];
     }
 }

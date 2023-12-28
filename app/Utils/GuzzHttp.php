@@ -3,6 +3,7 @@ namespace App\Utils;
 
 use App\Helpers\Header;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 class GuzzHttp
 {
 

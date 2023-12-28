@@ -3,6 +3,7 @@ namespace App\ServicesHttp;
 
 use App\Helpers\Header;
 use App\Utils\GuzzHttp;
+use GuzzleHttp\Exception\ClientException;
 use App\Model\Upload;
 use App\Model\Pathkit;
 use Exception;
@@ -17,7 +18,7 @@ class UploadService
             $client = GuzzHttp::ClientHttp();
 
 
-            $response = $client->request('POST', 'files/upload/', [
+            $response = $client->request('POST', 'files/upload', [
                 'multipart' => [
                     [
                         'name' => 'file',
@@ -49,17 +50,24 @@ class UploadService
             }
             $upload->fileId = $body->fileId;
             $upload->save();
+
+            $Pathkit = new Pathkit;
+            $Pathkit->path_file = $path;
+            $Pathkit->upload_id = $upload->id;
+            $Pathkit->save();
+
             return Header::validateRequest($statusCode, $body);
-        } catch (Exception $th) {
-            return Header::validateRequest((int) 500, 'Erro durante o upload: ' . $th->getMessage());
+        } catch (ClientException $e) {
+            return Header::validateRequest((int) 500, 'Erro durante o upload: ' . $e->getMessage());
         }
     }
 
-    public static function deleteFile($fileId)
+    public static function deleteFile($fileId, $uploadId)
     {
         try {
             $client = GuzzHttp::ClientHttp();
             $client->request('DELETE', "files/{$fileId}");
+            Upload::where('id', $uploadId)->delete();
             return Header::validateRequest((int) 200, 'File deletado com sucesso');
         } catch (\Throwable $th) {
             return Header::validateRequest((int) 500, $th->getMessage());
@@ -87,6 +95,7 @@ class UploadService
             $response = $client->request('POST', 'folder', ['folderName' => $nameFolder]);
             $statusCode = $response->getStatusCode();
             $body = json_decode($response->getBody()->getContents());
+            
             return Header::validateRequest($statusCode, $body);
         } catch (\Throwable $th) {
             return Header::validateRequest((int) 500, $th->getMessage());
@@ -105,11 +114,6 @@ class UploadService
                 ]
             ]
             );
-
-            $path = new Pathkit;
-            $path->path_file = 'files/' . $userName . '/' . $nameFolder;
-            $path->user_id = $userId;
-            $path->save();
             $statusCode = $response->getStatusCode();
             return Header::validateRequest($statusCode, 'Folder created success');
         } catch (\Throwable $th) {
@@ -117,7 +121,7 @@ class UploadService
         }
     }
 
-    public static function deleteFolder($folderPath)
+    public static function deleteFolder($folderPath, $pathId)
     {
         try {
             $client = GuzzHttp::ClientHttp();
@@ -127,8 +131,10 @@ class UploadService
                 ]
             ]
             );
+            Pathkit::where('id', $pathId)->delete();
+
             $statusCode = $response->getStatusCode();
-            return Header::validateRequest($statusCode, 'Pasta deletada com sucesso!');
+            return Header::validateRequest(200, 'Pasta deletada com sucesso!');
         } catch (\Throwable $e) {
             return Header::validateRequest((int) 500, $e->getMessage());
         }

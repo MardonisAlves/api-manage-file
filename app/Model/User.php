@@ -19,7 +19,7 @@ class User extends Model {
     }
 
     public function uploads(): HasMany{
-        return $this->hasMany(Uploads::class);
+        return $this->hasMany(Upload::class);
     }
 
     // public function paths(): HasMany{

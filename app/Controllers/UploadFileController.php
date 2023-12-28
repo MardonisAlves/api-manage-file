@@ -16,6 +16,7 @@ class UploadFileController extends BaseController
       $uploadedFile = $requestFile['file'];
       $folder = Sanitize::stringSanitize($paramValue['folder']);
       $userId = Sanitize::stringSanitize($paramValue['userId']);
+
      
 
       if (empty($requestFile['file']) || empty($paramValue['folder']) || empty($paramValue['userId'])) {
@@ -25,7 +26,6 @@ class UploadFileController extends BaseController
         return UploadService::sendFile($uploadedFile, $folder, $userId, $nameFile);
       }
     } catch (Exception $e) {
-      var_dump($e);
       return Header::validateRequest((int) 500, $e->getMessage());
     }
 
@@ -34,7 +34,9 @@ class UploadFileController extends BaseController
   public function deleteUpload(){
     try {
       $paramValue = $this->request->getQueryParams();
-      return UploadService::deleteFile(Sanitize::stringSanitize($paramValue['fileId']));
+      $fileId= Sanitize::stringSanitize($paramValue['fileId']);
+      $uploadId= Sanitize::stringSanitize($paramValue['upload_id']);
+      return UploadService::deleteFile($fileId, $uploadId);
     } catch (\Throwable $th) {
       return Header::validateRequest((int) 500, $th->getMessage());
     }
@@ -59,6 +61,7 @@ class UploadFileController extends BaseController
 
       $pathFile =  Pathkit::where('path_file', 'files/'.$name.'/'.$path)->get();
       $pathDecode = json_decode($pathFile, true);
+      
       if(count($pathDecode) > 0){
         return Header::validateRequest((int)200, 'A pasta com este nome ja existe');
       }
@@ -73,7 +76,7 @@ class UploadFileController extends BaseController
     try {
       $data =  $this->request->getBody();
       $post = json_decode($data, true);
-      return UploadService::deleteFolder($post['folderPath']);
+      return UploadService::deleteFolder($post['folderPath'], $post['pathId']);
     } catch (Exception $e) {
       return Header::validateRequest((int)500, $e->getMessage());
     }
