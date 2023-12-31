@@ -16,8 +16,6 @@ class UploadService
         try {
             $base64Content = base64_encode($base64->getStream()->getContents());
             $client = GuzzHttp::ClientHttp();
-
-
             $response = $client->request('POST', 'files/upload', [
                 'multipart' => [
                     [

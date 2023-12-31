@@ -15,7 +15,7 @@ class AuthController extends BaseController{
          $data =  $this->request->getBody();
          $post = json_decode($data, true);
          $user = User::with('permission')->where('email', Sanitize::emailSanitize($post['email']))->first();
-         $verify = password_verify($post['password'], $user->password);
+         $verify = password_verify( Sanitize::stringSanitize($post['password']), $user->password);
 
          if(empty($user) || $verify === false){
             return Header::validateRequest((int)401, 'Por favor verificar suas credenciais de acesso');

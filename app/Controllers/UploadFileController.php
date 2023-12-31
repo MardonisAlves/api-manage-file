@@ -17,8 +17,6 @@ class UploadFileController extends BaseController
       $folder = Sanitize::stringSanitize($paramValue['folder']);
       $userId = Sanitize::stringSanitize($paramValue['userId']);
 
-     
-
       if (empty($requestFile['file']) || empty($paramValue['folder']) || empty($paramValue['userId'])) {
         return Header::validateRequest((int) 400, 'Por favor selecinar um file com o nome da pasta e id user');
       } else {

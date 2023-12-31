@@ -2,12 +2,13 @@
 namespace App\Route;
 use App\Controllers\UserController;
 use App\Controllers\AuthController;
+use App\Controllers\EmailController;
 use App\Controllers\UploadFileController;
 use Slim\Routing\RouteCollectorProxy;
 use App\Middleware\JwtMiddleware;
 use App\Helpers\ValidatorUserCreate;
 use App\Dependeces\Dependeces;
-use App\Helpers\Header;
+
 
 class AppRoutes
 {
@@ -25,6 +26,7 @@ class AppRoutes
         $this->configureUserRoutes();
         $this->configureUploadRoutes();
         $this->configureHomeRoutes();
+        $this->configureEmailRoutes();
 
         $this->app->addErrorMiddleware(true, true, true);
         $this->app->run();
@@ -33,7 +35,7 @@ class AppRoutes
     private function configureAuthRoutes()
     {
         $this->app->get('/', function ($request, $response) {
-           return Header::validateRequest(200, 'Seja bem vindo');
+          echo phpinfo();
         });
     }
 
@@ -83,7 +85,22 @@ class AppRoutes
                 $uploadController = new UploadFileController($request, $response);
                 return $uploadController->deleteFolder();
             });
+
+            $group->post('/videos', function ($request, $response) {
+                $uploadController = new UploadFileController($request, $response);
+                return $uploadController->createUpload();
+            });
         })->add(new JwtMiddleware());
+    }
+
+    private function configureEmailRoutes()
+    {
+        $this->app->group('/email', function (RouteCollectorProxy $group) {
+            $group->post('/resetPassword', function ($request, $response) {
+                $userController = new EmailController($request, $response);
+                return $userController->resetPassword();
+            });
+        });
     }
 }
 
